@@ -19,6 +19,8 @@ class Station(BaseModel):
     region = models.CharField(max_length=1023)
 
 
+    def __unicode__(self):
+        return "%s (%s)" % (self.title, self.same_as)
 
     RDF_TYPE = "odpt:Station"
     @classmethod

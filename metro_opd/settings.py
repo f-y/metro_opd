@@ -61,10 +61,10 @@ WSGI_APPLICATION = 'metro_opd.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'metroopd',
-        'USER': 'root',
-        'PASSWORD': '4fujiki4',
-        'HOST': 'localhost',
+        'NAME': 'metro',
+        'USER': 'metro',
+        'PASSWORD': 'metropwd',
+        'HOST': 'metro.cwwwtidsemcn.ap-northeast-1.rds.amazonaws.com',
         'PORT': '3306',
     }
 }

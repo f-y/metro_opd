@@ -1,0 +1,5 @@
+# import trainplace
+# 5時から23時まで1分ごとに起動
+* 5-23 * * * cd /home/ubuntu/app/metro_opd/ && python manage.py import_trainplace_now
+# 0時から0時30分まで1分ごとに起動
+0-30 0 * * * cd /home/ubuntu/app/metro_opd/ && python manage.py import_trainplace_now
