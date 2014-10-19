@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'trainplace',
     'station',
+    'railway',
     'common',
 )
 

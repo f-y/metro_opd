@@ -8,16 +8,16 @@ import sys
 import dateutil.parser as dp
 
 class TrainPlace(BaseModel):
-    date  = models.DateTimeField()
+    date  = models.DateTimeField(db_index=True)
     valid = models.DateTimeField()
     delay = models.IntegerField()
     frequency = models.IntegerField()
-    from_station = models.ForeignKey(Station, related_name='%(class)s_from', null=True)
+    from_station = models.ForeignKey(Station, related_name='%(class)s_from', null=True, db_index=True)
     rail_direction = models.CharField(max_length=255)
     railway = models.CharField(max_length=255)
     starting_station = models.ForeignKey(Station, related_name='%(class)s_stating', null=True)
     terminal_station = models.ForeignKey(Station, related_name='%(class)s_terminal', null=True)
-    to_station = models.ForeignKey(Station, related_name='%(class)s_to', null=True)
+    to_station = models.ForeignKey(Station, related_name='%(class)s_to', null=True, db_index=True)
     train_number = models.CharField(max_length=31)
     train_owner = models.CharField(max_length=255)
     train_type = models.CharField(max_length=255)
@@ -27,6 +27,15 @@ class TrainPlace(BaseModel):
     terminal_station_raw = models.CharField(max_length=255)
     to_station_raw = models.CharField(max_length=255, null=True, blank=True)
 
+
+    class Meta:
+        index_together = [
+            ['date', 'from_station', 'to_station'],
+        ]
+
+    def __unicode__(self):
+        return u'%s %s (%s発 - %s行き): from %s - to %s' % (self.train_owner, self.train_number, 
+                self.starting_station, self.terminal_station, self.from_station, self.to_station)
 
     RDF_TYPE = "odpt:Train"
     @classmethod
@@ -40,10 +49,10 @@ class TrainPlace(BaseModel):
             try:
                 date = dp.parse(d['dc:date'])
                 valid = dp.parse(d['dct:valid'])
-                from_station = Station.get_by_id(d['odpt:fromStation'])
-                starting_station = Station.get_by_id(d['odpt:startingStation'])
-                terminal_station = Station.get_by_id(d['odpt:terminalStation'])
-                to_station = Station.get_by_id(d['odpt:toStation'])
+                from_station = Station.get_or_create(d['odpt:fromStation'])
+                starting_station = Station.get_or_create(d['odpt:startingStation'])
+                terminal_station = Station.get_or_create(d['odpt:terminalStation'])
+                to_station = Station.get_or_create(d['odpt:toStation'])
 
                 cls(ld_context       = d['@context'],
                     ld_id            = d['@id'],

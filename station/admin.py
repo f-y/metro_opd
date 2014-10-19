@@ -1,3 +1,4 @@
 from django.contrib import admin
+from station.models import Station
 
-# Register your models here.
+admin.site.register(Station)

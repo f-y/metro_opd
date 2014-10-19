@@ -1,3 +1,4 @@
 from django.contrib import admin
+from trainplace.models import TrainPlace
 
-# Register your models here.
+admin.site.register(TrainPlace)
